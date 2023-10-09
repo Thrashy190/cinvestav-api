@@ -1,13 +1,12 @@
 import { Controller, Get, HttpStatus, Param, Patch, Res } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
+  ApiBearerAuth
 } from '@nestjs/swagger';
-import { response } from 'express';
 
 @ApiTags('Users API')
 @ApiBearerAuth()

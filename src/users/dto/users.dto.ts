@@ -15,10 +15,7 @@ export class UserDto extends User {
   role: string;
 
   @ApiResponseProperty()
-  accept_terms_and_conditions: boolean;
-
-  @ApiResponseProperty()
-  created_at: Date;
+  acceptTermsAndConditions: boolean;
 
   constructor(args?: Partial<UserDto>) {
     super();

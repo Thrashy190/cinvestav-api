@@ -6,12 +6,12 @@ import { CadetsModule } from './cadets/cadets.module';
 import { UsersModule } from './users/users.module';
 import { UploaderModule } from './uploader/uploader.module';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(
-      `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
-    ),
+    MongooseModule.forRoot(process.env.DB_URI,{dbName: process.env.DB_NAME}),
+    MongooseModule,
     AuthModule,
     CadetsModule,
     UsersModule,

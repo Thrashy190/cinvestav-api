@@ -3,9 +3,9 @@ import { HydratedDocument, now } from 'mongoose';
 
 export type CadetDocument = HydratedDocument<Cadet>;
 
-@Schema()
+@Schema({ collection: 'cadets', timestamps: true })
 export class Cadet {
-  @Prop()
+  @Prop({ index: true, unique: true })
   identifier: string;
 
   @Prop()
@@ -15,10 +15,8 @@ export class Cadet {
   rank: string;
 
   @Prop()
-  marital_status: string;
+  maritalStatus: string;
 
-  @Prop({ default: now() })
-  created_at: Date;
 }
 
 export const CadetSchema = SchemaFactory.createForClass(Cadet);

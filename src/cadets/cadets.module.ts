@@ -6,7 +6,7 @@ import { Cadet, CadetSchema } from './cadets.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Cadet.name, schema: CadetSchema }]),
+    MongooseModule.forFeature([{ name: Cadet.name,collection:"cadets", schema: CadetSchema }]),
     CadetsModule,
   ],
   controllers: [CadetsController],

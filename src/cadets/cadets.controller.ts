@@ -12,12 +12,14 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiBearerAuth,
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateCadetDto } from './dto/create-cadet.dto';
 import { CadetDto } from './dto/cadet.dto';
 
 @ApiTags('Cadets API')
+@ApiBearerAuth()
 @Controller('cadets')
 export class CadetsController {
   constructor(private cadetService: CadetsService) {}

@@ -6,7 +6,7 @@ export class CreateCadetDto extends PickType(Cadet, [
   'identifier',
   'gender',
   'rank',
-  'marital_status',
+  'maritalStatus',
 ]) {
   @ApiProperty()
   @IsString()
@@ -26,7 +26,7 @@ export class CreateCadetDto extends PickType(Cadet, [
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  marital_status: string;
+  maritalStatus: string;
 
   constructor(args?: Partial<CreateCadetDto>) {
     super();

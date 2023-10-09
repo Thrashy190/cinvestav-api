@@ -15,10 +15,7 @@ export class CadetDto extends Cadet {
   rank: string;
 
   @ApiResponseProperty()
-  marital_status: string;
-
-  @ApiResponseProperty()
-  created_at: Date;
+  maritalStatus: string;
 
   constructor(args?: Partial<CadetDto>) {
     super();

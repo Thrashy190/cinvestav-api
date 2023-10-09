@@ -3,9 +3,9 @@ import { HydratedDocument, now } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
-@Schema()
+@Schema({ collection: 'users', timestamps: true })
 export class User {
-  @Prop()
+  @Prop({ index: true, unique: true })
   identifier: string;
 
   @Prop()
@@ -15,10 +15,8 @@ export class User {
   role: string;
 
   @Prop({ default: false })
-  accept_terms_and_conditions: boolean;
+  acceptTermsAndConditions: boolean;
 
-  @Prop({ default: now() })
-  created_at: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

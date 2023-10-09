@@ -7,7 +7,7 @@ import { User } from 'src/users/users.schema';
 export class AuthService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async signUp(user: User): Promise<User> {
+  async signUp(user: Partial<User>): Promise<User> {
     const createdUser = new this.userModel(user);
     return await createdUser.save();
   }
