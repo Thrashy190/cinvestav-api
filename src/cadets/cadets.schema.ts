@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, now } from 'mongoose';
+import { File } from 'src/files/file.schema';
 
 export type CadetDocument = HydratedDocument<Cadet>;
 
@@ -17,6 +18,8 @@ export class Cadet {
   @Prop()
   maritalStatus: string;
 
+  @Prop()
+  files: File[];
 }
 
 export const CadetSchema = SchemaFactory.createForClass(Cadet);

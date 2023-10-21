@@ -7,6 +7,15 @@ import { User } from './users.schema';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
+  async createUser(user: Partial<User>): Promise<User> {
+    const createdUser = new this.userModel(user);
+    return await createdUser.save();
+  }
+
+  async getUserByIdentifier(identifier: string): Promise<User> {
+    return await this.userModel.findOne({ identifier: identifier });
+  }
+
   async getUsers(): Promise<User[]> {
     return await this.userModel.find().exec();
   }
