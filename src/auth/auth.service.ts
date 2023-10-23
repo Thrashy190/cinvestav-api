@@ -1,10 +1,10 @@
-import { Injectable, HttpStatus } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException, BadRequestException, HttpStatus } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/users/users.schema';
 import { AuthDto } from './dto/auth.dto';
 import { HashService } from 'src/utils/hash/hash.service';
-import { UnauthorizedException } from '@nestjs/common';
+
 
 @Injectable()
 export class AuthService {
@@ -18,13 +18,11 @@ export class AuthService {
     const result = await this.usersService.getUserByIdentifier(user.identifier);
 
     if (result) {
-      return {
-        status: HttpStatus.BAD_REQUEST,
-        message: 'User exist',
-      };
+      throw new BadRequestException('User already exists');
     }
 
     user.password = await this.hashService.hashPassword(user.password);
+
     return await this.usersService.createUser(user);
   }
 
@@ -32,10 +30,7 @@ export class AuthService {
     const user = await this.usersService.getUserByIdentifier(auth.identifier);
 
     if (!user) {
-      return {
-        status: HttpStatus.BAD_REQUEST,
-        message: 'User does not exist',
-      };
+      throw new NotFoundException('User not found');
     }
 
     const isMatch = await this.hashService.comparePassword(
@@ -44,7 +39,7 @@ export class AuthService {
     );
 
     if (!isMatch) {
-      return { status: HttpStatus.BAD_REQUEST, message: 'Incorrect password' };
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     const payload = { sub: user.identifier, username: user.identifier };
@@ -55,8 +50,13 @@ export class AuthService {
     });
 
     return {
-      status: HttpStatus.OK,
+      statusCode:HttpStatus.OK ,
       access_token: accessToken,
+      user: {
+        identifier: user.identifier,
+        accept_terms_and_conditions: user.acceptTermsAndConditions,
+        role: user.role,
+      },
     };
   }
 }

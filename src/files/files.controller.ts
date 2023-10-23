@@ -18,11 +18,9 @@ import {
 } from '@nestjs/swagger';
 import { FilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/guards/jwtAuth.guard';
-import { FileManageDto } from './dto/file-manage.dto';
 import { diskStorage } from 'multer';
 import { homedir } from 'os';
 import { join } from 'path';
-import { createReadStream, readFileSync } from 'fs';
 import { FilesService } from './files.service';
 
 @ApiTags('Files API')
@@ -107,7 +105,6 @@ export class FilesController {
   //@UseGuards(AuthGuard)
   async downloadFile(@Res() response, @Param('id') id: string) {
     const files = await this.filesService.getFiles(id);
-    console.log(files);
-    return response.status(200).json({ files });
+    return response.status(200).json( files );
   }
 }

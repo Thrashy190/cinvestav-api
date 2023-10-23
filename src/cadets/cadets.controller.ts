@@ -12,6 +12,7 @@ import { CadetsService } from './cadets.service';
 import { ApiOperation, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateCadetDto } from './dto/create-cadet.dto';
 import { CadetDto } from './dto/cadet.dto';
+import { Cadet } from './cadets.schema';
 import { AuthGuard } from 'src/guards/jwtAuth.guard';
 
 @ApiTags('Cadets API')
@@ -24,19 +25,16 @@ export class CadetsController {
   @ApiOperation({ summary: 'Create cadets' })
   @UseGuards(AuthGuard)
   async createCadet(
-    @Res() response,
     @Body() cadet: CreateCadetDto,
-  ): Promise<CadetDto> {
-    const result = await this.cadetService.createCadet(cadet);
-    return response.status(HttpStatus.CREATED).json({ result });
+  ): Promise<Cadet> {
+    return await this.cadetService.createCadet(cadet);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all cadets' })
   @UseGuards(AuthGuard)
-  async getCadets(@Res() response) {
-    const cadets = await this.cadetService.getCadets();
-    return response.status(HttpStatus.OK).json({ cadets });
+  async getCadets() {
+    return await this.cadetService.getCadets();
   }
 
   @Get(':id')

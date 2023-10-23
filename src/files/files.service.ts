@@ -27,7 +27,6 @@ export class FilesService {
 
   async getFiles(id: string) {
     const filter = { cadetId: id };
-    console.log(filter);
     return await this.fileModel.find(filter).exec();
   }
 }

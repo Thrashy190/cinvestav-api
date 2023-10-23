@@ -10,6 +10,8 @@ import {
 import { UsersService } from './users.service';
 import { ApiOperation, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/jwtAuth.guard';
+import { User } from './users.schema';
+
 
 @ApiTags('Users API')
 @ApiBearerAuth()
@@ -20,17 +22,14 @@ export class UsersController {
   @Get()
   @ApiOperation({ summary: 'Get all users' })
   @UseGuards(AuthGuard)
-  async getUsers(@Res() response): Promise<string> {
-    const users = await this.userService.getUsers();
-    return response.status(HttpStatus.OK).json({ users });
+  async getUsers(): Promise<User[]> {
+    return await this.userService.getUsers();
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Accept terms and conditions' })
   @UseGuards(AuthGuard)
-  async acceptTermsAndConditions(@Res() response, @Param('id') id: string) {
-    const acceptTermsAndConditions =
-      await this.userService.acceptTermsAndConditions(id);
-    return response.status(HttpStatus.OK).json({ acceptTermsAndConditions });
+  async acceptTermsAndConditions( @Param('id') id: string) {
+    return await this.userService.acceptTermsAndConditions(id);
   }
 }

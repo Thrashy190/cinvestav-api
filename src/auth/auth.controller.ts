@@ -11,19 +11,17 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Login user' })
-  async login(@Res() response, @Body() auth: AuthDto) {
-    const result = await this.authService.login(auth);
-    return response.status(result.status).json({ result });
+  async login( @Body() auth: AuthDto) {
+    return await this.authService.login(auth);
   }
 
   @Post('signup')
   @ApiOperation({ summary: 'Create users' })
-  async signup(@Res() response, @Body() user: CreateUserDto) {
-    const result = await this.authService.signUp(user);
-    return response.status(HttpStatus.CREATED).json({ result });
+  async signup( @Body() user: CreateUserDto) {
+    return await this.authService.signUp(user);
   }
 
   @Post('logout')
   @ApiOperation({ summary: 'Logout' })
-  async logout(@Res() response) {}
+  async logout() {}
 }
