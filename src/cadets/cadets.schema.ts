@@ -19,6 +19,9 @@ export class Cadet {
   maritalStatus: string;
 
   @Prop()
+  birthDate: Date;
+
+  @Prop()
   files: File[];
 }
 

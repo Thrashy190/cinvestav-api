@@ -1,5 +1,5 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsDate } from 'class-validator';
 import { Cadet } from '../cadets.schema';
 
 export class CreateCadetDto extends PickType(Cadet, [
@@ -22,6 +22,11 @@ export class CreateCadetDto extends PickType(Cadet, [
   @IsString()
   @IsNotEmpty()
   gender: string;
+
+  @ApiProperty()
+  @IsDate()
+  @IsNotEmpty()
+  birthDate: Date;
 
   @ApiProperty()
   @IsString()
