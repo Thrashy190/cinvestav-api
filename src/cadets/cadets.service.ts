@@ -16,7 +16,7 @@ export class CadetsService {
   }
 
   async getCadet(id: string) {
-    const filter = { _id: id };
+    const filter = { identifier: id };
     return await this.cadetModel.findOne(filter).exec();
   }
 }
