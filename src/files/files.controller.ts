@@ -18,10 +18,9 @@ import {
 } from '@nestjs/swagger';
 import { FilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/guards/jwtAuth.guard';
-import { diskStorage } from 'multer';
-import { homedir } from 'os';
-import { join } from 'path';
+
 import { FilesService } from './files.service';
+import { multerOptions } from 'src/config/multer';
 
 @ApiTags('Files API')
 //@ApiBearerAuth()
@@ -45,18 +44,7 @@ export class FilesController {
     },
   })
   @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: join(homedir(), 'uploads', 'images'),
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          return cb(null, `${randomName}${file.originalname}`);
-        },
-      }),
-    }),
+    FileInterceptor('file', multerOptions),
   )
   uploadFile(
     @Res() response,
@@ -67,7 +55,7 @@ export class FilesController {
     return response.status(200).json({ result });
   }
 
-  @Post('upload-files')
+  @Post('upload-files/:id')
   @ApiOperation({ summary: 'Upload multiple files' })
   //@UseGuards(AuthGuard)
   @ApiConsumes('multipart/form-data')
@@ -83,21 +71,13 @@ export class FilesController {
     },
   })
   @UseInterceptors(
-    FilesInterceptor('files', null, {
-      storage: diskStorage({
-        destination: join(homedir(), 'uploads', 'images'),
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          return cb(null, `${randomName}${file.originalname}`);
-        },
-      }),
-    }),
+    FilesInterceptor('files', null, multerOptions),
   )
-  uploadFiles(@UploadedFiles() files: Array<Express.Multer.File>) {
-    console.log(files);
+  uploadFiles( @Res() response, @UploadedFiles() files: Array<Express.Multer.File>, @Param('id') id: string,) {
+    for (const file of files) {
+      const result = this.filesService.addImagesToCadet(id, file);
+    }
+    return response.status(200).json({status: "success"});
   }
 
   @Get('download-file/:id')

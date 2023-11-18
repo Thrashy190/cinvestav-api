@@ -44,4 +44,12 @@ export class CadetsController {
     const cadet = await this.cadetService.getCadet(id);
     return response.status(HttpStatus.OK).json({ cadet });
   }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get cadet' })
+  @UseGuards(AuthGuard)
+  async createNote(@Res() response, @Param('id') id: string) {
+    const cadet = await this.cadetService.getCadet(id);
+    return response.status(HttpStatus.OK).json({ cadet });
+  }
 }

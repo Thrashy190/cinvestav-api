@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable,NotFoundException, } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cadet } from 'src/cadets/cadets.schema';
 import { File } from './file.schema';
@@ -13,6 +13,13 @@ export class FilesService {
   ) {}
 
   async addImagesToCadet(id: string, file: Express.Multer.File) {
+
+    const result = this.cadetModel.findOne({ identifier: id }).exec();
+
+    if (!result) {
+      throw new NotFoundException('User not found');
+    }
+
     const savedFile = await new this.fileModel({
       cadetId: id,
       data: readFileSync(file.path),
@@ -20,10 +27,12 @@ export class FilesService {
     }).save();
 
     return await this.cadetModel.findOneAndUpdate(
-      { _id: id },
+      { identifier: id },
       { $push: { files: savedFile._id } },
     );
   }
+
+  
 
   async getFiles(id: string) {
     const filter = { cadetId: id };

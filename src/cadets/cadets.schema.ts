@@ -23,6 +23,9 @@ export class Cadet {
 
   @Prop()
   files: File[];
+
+  @Prop()
+  notes: String[];
 }
 
 export const CadetSchema = SchemaFactory.createForClass(Cadet);
